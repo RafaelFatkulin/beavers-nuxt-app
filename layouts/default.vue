@@ -8,14 +8,14 @@ const items = ref([
     to: "/"
   },
   {
-    label: "Sign In",
-    icon: "i-heroicons-arrow-left-on-rectangle",
-    to: "/sign-in"
-  },
-  {
     label: "Dashboard",
     icon: "i-heroicons-briefcase",
     to: "/dashboard"
+  },
+  {
+    label: "Sign In",
+    icon: "i-heroicons-arrow-left-on-rectangle",
+    to: "/sign-in"
   }
 ]);
 </script>

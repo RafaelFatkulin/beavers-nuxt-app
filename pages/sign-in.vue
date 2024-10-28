@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { z } from "zod";
+import auth from "~/services/auth";
 
 definePageMeta({
-  layout: "auth"
+  layout: "auth",
+  middleware: ["auth"]
 });
 
 const schema = z.object({
@@ -19,47 +21,21 @@ const state = reactive<Partial<Schema>>({
   password: ""
 });
 
+const { signIn } = useAuth();
+
 const toast = useToast();
 
-const signIn = async () => {
-  return await $fetch<{
-    success: boolean;
-    message: string;
-    data: { accessToken: string; refreshToken: string };
-  }>("http://localhost:8000/auth/signin", {
-    method: "POST",
-    body: state
-  })
-    .then((res) => {
-      if (res.success) {
-        toast.add({
-          title: "Success",
-          description: "Вы успешно вошли в систему",
-          color: "success"
-        });
-        localStorage.setItem("access_token", res.data.accessToken);
-        localStorage.setItem("refresh_token", res.data.refreshToken);
-        navigateTo("/dashboard", { replace: true });
-      }
-    })
-    .catch((err) => {
-      toast.add({
-        title: "Error",
-        description: err.response._data.message,
-        color: "error"
-      });
-    });
-};
-
-async function onSubmit(event: FormSubmitEvent<Schema>) {
-  console.log(event.data);
-  await signIn();
+async function onSubmit() {
+  await signIn({
+    email: state.email || "",
+    password: state.password || ""
+  });
 }
 </script>
 
 <template>
   <UContainer>
-    <UCard class="min-w-[420px]">
+    <UCard class="mx-auto w-full max-w-[420px]">
       <template #header>
         <h1>Sign In</h1>
       </template>

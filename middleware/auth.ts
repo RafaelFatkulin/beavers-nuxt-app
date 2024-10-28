@@ -1,7 +1,11 @@
 export default defineNuxtRouteMiddleware((to, from) => {
-  console.log(to, from);
-  const accessToken = localStorage.getItem("access_token");
-  if (!accessToken) {
+  const { accessToken } = useAuth();
+
+  if (!accessToken.value && to.name === "dashboard") {
     return navigateTo("/sign-in");
+  }
+
+  if (accessToken.value && to.name === "sign-in") {
+    return navigateTo("/dashboard");
   }
 });
