@@ -4,8 +4,8 @@ export const useAuth = () => {
   const accessToken = useState<string | null>("access_token", () => null);
   const refreshToken = useState<string | null>("refresh_token", () => null);
 
-  accessToken.value = useCookie("access_token").value || "";
-  refreshToken.value = useCookie("refresh_token").value || "";
+  accessToken.value = useCookie("accessToken").value || "";
+  refreshToken.value = useCookie("refreshToken").value || "";
 
   const setUser = (user: User) => {
     authUser.value = user;
@@ -25,15 +25,14 @@ export const useAuth = () => {
         success: boolean;
       }>("http://localhost:8000/auth/signin", {
         method: "POST",
+        credentials: "include",
         body: {
           email,
           password
         }
       });
-      accessToken.value = data.data.accessToken;
-      refreshToken.value = data.data.refreshToken;
-      useCookie("access_token").value = data.data.accessToken;
-      useCookie("refresh_token").value = data.data.refreshToken;
+      accessToken.value = useCookie("accessToken").value || "";
+      refreshToken.value = useCookie("refreshToken").value || "";
 
       navigateTo("/dashboard", {
         replace: true
