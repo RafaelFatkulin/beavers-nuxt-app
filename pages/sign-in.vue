@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { z } from "zod";
-import auth from "~/services/auth";
 
 definePageMeta({
   layout: "auth",
@@ -21,9 +20,10 @@ const state = reactive<Partial<Schema>>({
   password: ""
 });
 
-const { signIn } = useAuth();
-
 const toast = useToast();
+const router = useRouter();
+
+const { signIn } = useAuth();
 
 async function onSubmit() {
   await signIn({

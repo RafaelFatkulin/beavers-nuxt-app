@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxt/ui": "^3.0.0-alpha.7",
     "@pinia/nuxt": "^0.5.5",
+    "@sidebase/nuxt-auth": "^0.9.4",
     "@vueuse/core": "^11.1.0",
     "nuxt": "^3.13.2",
     "vue": "latest",
