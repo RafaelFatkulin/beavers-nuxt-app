@@ -7,5 +7,14 @@ export default defineNuxtConfig({
     public: {
       apiUrl: "http://localhost:8000"
     }
+  },
+  icon: {
+    serverBundle: {
+      icons: [
+        "heroicons:arrow-right-end-on-rectangle",
+        "heroicons:arrow-right-start-on-rectangle",
+        "heroicons:exclamation-circle"
+      ]
+    }
   }
 });

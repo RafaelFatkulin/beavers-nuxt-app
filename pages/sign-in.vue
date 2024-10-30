@@ -20,53 +20,88 @@ const state = reactive<Partial<Schema>>({
   password: ""
 });
 
+const email = computed(() => state.email);
+const password = computed(() => state.password);
+
 const toast = useToast();
 const router = useRouter();
 
-const { signIn } = useAuth();
+const { signIn, updateCookies, updateUser } = useAuth();
 
-async function onSubmit() {
-  await signIn({
-    email: state.email || "",
-    password: state.password || ""
-  });
-}
+const { data, status, error, clear, execute } = signIn({
+  email,
+  password
+});
+
+watch(status, (value) => {
+  if (value === "success") {
+    updateCookies({
+      at: data.value?.data?.accessToken || "",
+      rt: data.value?.data?.refreshToken || ""
+    });
+    updateUser(data.value?.data?.user || null);
+    toast.add({
+      title: "Добро пожаловать!"
+    });
+    router.push("/dashboard");
+  }
+  if (value === "error") {
+    toast.add({
+      title: "Ошибка",
+      description: error.value?.data?.message,
+      color: "error",
+      icon: "i-heroicons-exclamation-circle"
+    });
+    clear();
+  }
+});
 </script>
 
 <template>
-  <UContainer>
-    <UCard class="mx-auto w-full max-w-[420px]">
-      <template #header>
-        <h1>Sign In</h1>
-      </template>
+  <UCard class="mx-auto w-full max-w-[420px]">
+    <template #header>
+      <h1 class="text-lg font-semibold text-center">Sign In</h1>
+    </template>
 
-      <UForm
-        :schema="schema"
-        :state="state"
-        class="space-y-4"
-        @submit="onSubmit"
+    <UForm
+      :schema="schema"
+      :state="state"
+      class="space-y-4"
+      @submit="execute"
+    >
+      <UFormField
+        label="Email"
+        name="email"
       >
-        <UFormField
-          label="Email"
-          name="email"
-        >
-          <UInput
-            v-model="state.email"
-            class="w-full"
-          />
-        </UFormField>
-        <UFormField
-          label="Password"
-          name="password"
-        >
-          <UInput
-            v-model="state.password"
-            class="w-full"
-          />
-        </UFormField>
+        <UInput
+          v-model="state.email"
+          class="w-full"
+        />
+      </UFormField>
+      <UFormField
+        label="Password"
+        name="password"
+      >
+        <UInput
+          v-model="state.password"
+          class="w-full"
+        />
+      </UFormField>
 
-        <UButton type="submit"> Sign In </UButton>
-      </UForm>
-    </UCard>
-  </UContainer>
+      <UButton
+        type="submit"
+        class="w-full items-center justify-center"
+        :loading="status === 'pending'"
+      >
+        <template #leading>
+          <UIcon
+            v-if="status !== 'pending'"
+            name="i-heroicons-arrow-right-end-on-rectangle"
+            class="size-5"
+          />
+        </template>
+        <template #default> Sign In </template>
+      </UButton>
+    </UForm>
+  </UCard>
 </template>

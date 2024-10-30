@@ -6,3 +6,14 @@ type User = {
   avatar: string | null;
   role: "ADMIN" | "LOGISTICIAN" | "MANAGER";
 };
+
+type SuccessResponse<T> = {
+  data?: T;
+  message?: string;
+  success: boolean;
+};
+
+type ErrorResponse = {
+  message: string;
+  success: boolean;
+};

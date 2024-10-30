@@ -1,5 +1,3 @@
-import { useLocalStorage } from "@vueuse/core";
-import { server } from "./../node_modules/next-auth/client/__tests__/helpers/mocks.d";
 export const useAuth = () => {
   const accessToken = useCookie("access_token");
   const refreshToken = useCookie("refresh_token");
@@ -16,46 +14,83 @@ export const useAuth = () => {
   };
 
   const toast = useToast();
+  const { $api } = useNuxtApp();
 
   const {
     public: { apiUrl }
   } = useRuntimeConfig();
 
-  const signIn = async ({
+  const signIn = ({
     email,
     password
   }: {
-    email: string;
-    password: string;
+    email: ComputedRef<string | undefined>;
+    password: ComputedRef<string | undefined>;
   }) => {
-    const response = await $fetch<{
-      data: { accessToken: string; refreshToken: string; user: User };
-    }>("/auth/signin", {
+    return useAsyncData<
+      SuccessResponse<{
+        accessToken: string;
+        refreshToken: string;
+        user: User;
+      }>,
+      ErrorResponse
+    >(
+      "sign-in",
+      () =>
+        $api("/auth/signin", {
+          baseURL: apiUrl,
+          method: "POST",
+          body: {
+            email: email.value,
+            password: password.value
+          }
+        }),
+      { immediate: false }
+    );
+  };
+
+  const refresh = async () => {
+    console.log("whoo");
+    const response = await useAsyncData<
+      SuccessResponse<{ accessToken: string; refreshToken: string }>,
+      ErrorResponse
+    >(
+      "refresh",
+      () =>
+        $api("/auth/refresh", {
+          baseURL: apiUrl,
+          method: "POST",
+          body: {
+            refreshToken: refreshToken.value
+          }
+        }),
+      { immediate: true }
+    );
+    console.log("@response", response);
+
+    return response;
+  };
+
+  const getCurrentUser = async () => {
+    return await $api<{
+      data: User;
+      message: string;
+      success: boolean;
+    }>("/auth/me", {
       baseURL: apiUrl,
-      method: "POST",
-      body: {
-        email,
-        password
+      headers: {
+        Authorization: `Bearer ${accessToken.value}`
+      },
+      onResponse({ request, response, options }) {
+        if (response.ok && response._data) {
+          updateUser(response._data.data);
+        }
       }
     });
-
-    if (!response) {
-      return navigateTo("/sign-in");
-    }
-
-    if (response.data) {
-      updateCookies({
-        at: response.data.accessToken,
-        rt: response.data.refreshToken
-      });
-      updateUser(response.data.user);
-    }
-
-    return navigateTo("/dashboard");
   };
 
   const signOut = async () => {
-    const response = await $fetch<{
+    const response = await $api<{
       data: { accessToken: string; refreshToken: string; user: User };
       message: string;
       success: boolean;
@@ -91,6 +126,8 @@ export const useAuth = () => {
     user,
     updateUser,
     signOut,
-    isLoggedIn
+    isLoggedIn,
+    refresh,
+    getCurrentUser
   };
 };

@@ -34,7 +34,10 @@ const items = ref([
         v-if="isLoggedIn"
       >
         <template #leading>
-          <UIcon name="i-heroicons-arrow-left-on-rectangle" />
+          <UIcon
+            name="i-heroicons-arrow-right-start-on-rectangle"
+            class="size-5"
+          />
         </template>
         SignOut</UButton
       >
@@ -45,7 +48,10 @@ const items = ref([
         to="/sign-in"
       >
         <template #leading>
-          <UIcon name="i-heroicons-arrow-right-end-on-rectangle" />
+          <UIcon
+            name="i-heroicons-arrow-right-end-on-rectangle"
+            class="size-5"
+          />
         </template>
         SignIn
       </UButton>
