@@ -1,0 +1,1 @@
+<template><h1>Categories List page</h1></template>

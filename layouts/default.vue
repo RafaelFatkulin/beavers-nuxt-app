@@ -1,14 +1,9 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from "vue";
 
 const { signOut, isLoggedIn } = useAuth();
 
 const items = ref([
-  {
-    label: "Home",
-    icon: "i-heroicons-home",
-    to: "/"
-  },
   {
     label: "Dashboard",
     icon: "i-heroicons-briefcase",
@@ -23,41 +18,42 @@ const items = ref([
   <div class="flex flex-col min-h-screen px-4">
     <header class="py-2 flex flex-row items-center justify-between">
       <UNavigationMenu
-        :items="items"
-        class="justify-between"
-        variant="link"
+          :items="items"
+          class="justify-between"
+          variant="link"
       />
 
       <UButton
-        class="w-fit"
-        @click="signOut()"
-        v-if="isLoggedIn"
+          v-if="isLoggedIn"
+          class="w-fit"
+          @click="signOut()"
       >
         <template #leading>
           <UIcon
-            name="i-heroicons-arrow-right-start-on-rectangle"
-            class="size-5"
+              class="size-5"
+              name="i-heroicons-arrow-right-start-on-rectangle"
           />
         </template>
-        SignOut</UButton
+        SignOut
+      </UButton
       >
       <UButton
-        class="w-fit"
-        v-else
-        as="NuxtLink"
-        to="/sign-in"
+          v-else
+          as="NuxtLink"
+          class="w-fit"
+          to="/sign-in"
       >
         <template #leading>
           <UIcon
-            name="i-heroicons-arrow-right-end-on-rectangle"
-            class="size-5"
+              class="size-5"
+              name="i-heroicons-arrow-right-end-on-rectangle"
           />
         </template>
         SignIn
       </UButton>
     </header>
     <main class="flex-1">
-      <slot />
+      <slot/>
     </main>
   </div>
 </template>

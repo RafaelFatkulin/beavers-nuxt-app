@@ -1,13 +1,13 @@
 <template>
   <UApp>
     <NuxtLayout>
-      <NuxtLoadingIndicator />
-      <NuxtPage />
+      <NuxtLoadingIndicator/>
+      <NuxtPage/>
     </NuxtLayout>
   </UApp>
 </template>
 
-<script setup lang="ts"></script>
+<script lang="ts" setup></script>
 
 <style>
 @import "tailwindcss";

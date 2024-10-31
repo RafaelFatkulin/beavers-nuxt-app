@@ -1,7 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 definePageMeta({
-  layout: "default"
-  // middleware: ["auth"]
+  layout: "default",
 });
 </script>
 

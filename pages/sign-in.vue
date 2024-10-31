@@ -1,16 +1,15 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { z } from "zod";
 
 definePageMeta({
   layout: "auth",
-  middleware: ["auth"]
 });
 
 const schema = z.object({
   email: z.string({ required_error: "Email is required" }).email(),
   password: z
-    .string({ required_error: "Password is required" })
-    .min(8, { message: "Password must be at least 8 characters" })
+      .string({ required_error: "Password is required" })
+      .min(8, { message: "Password must be at least 8 characters" })
 });
 
 type Schema = z.infer<typeof schema>;
@@ -64,43 +63,43 @@ watch(status, (value) => {
     </template>
 
     <UForm
-      :schema="schema"
-      :state="state"
-      class="space-y-4"
-      @submit="execute"
+        :schema="schema"
+        :state="state"
+        class="space-y-4"
+        @submit="execute"
     >
       <UFormField
-        label="Email"
-        name="email"
+          label="Email"
+          name="email"
       >
         <UInput
-          v-model="state.email"
-          class="w-full"
+            v-model="state.email"
+            class="w-full"
         />
       </UFormField>
       <UFormField
-        label="Password"
-        name="password"
+          label="Password"
+          name="password"
       >
         <UInput
-          v-model="state.password"
-          class="w-full"
+            v-model="state.password"
+            class="w-full"
         />
       </UFormField>
 
       <UButton
-        type="submit"
-        class="w-full items-center justify-center"
-        :loading="status === 'pending'"
+          :loading="status === 'pending' || status === 'success'"
+          class="w-full items-center justify-center"
+          type="submit"
       >
         <template #leading>
           <UIcon
-            v-if="status !== 'pending'"
-            name="i-heroicons-arrow-right-end-on-rectangle"
-            class="size-5"
+              v-if="status !== 'pending'"
+              class="size-5"
+              name="i-heroicons-arrow-right-end-on-rectangle"
           />
         </template>
-        <template #default> Sign In </template>
+        <template #default> Sign In</template>
       </UButton>
     </UForm>
   </UCard>

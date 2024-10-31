@@ -1,44 +1,36 @@
 export default {
-  async login({ email, password }: { email: string; password: string }) {
-    try {
-      const response = await $fetch<{
-        data: {
-          accessToken: string;
-          refreshToken: string;
-        };
-        message: string | null;
-        success: boolean;
-      }>("/auth/signin", {
-        method: "POST",
-        body: {
-          email,
-          password
-        },
-        baseURL: "http://localhost:8000"
-      });
-      return response;
-    } catch (err) {
-      console.log("@err", err);
-      throw new Error("Ошибка при входе");
-    }
-  },
-
-  async getUser() {
-    try {
-      const response = await $fetch("/auth/me", {
-        baseURL: "http://localhost:8000",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`
-        },
-        onResponseError: (error) => {
-          error.response.status === 401;
+    async login({ email, password }: { email: string; password: string }) {
+        try {
+            return await $fetch<{
+                data: {
+                    accessToken: string;
+                    refreshToken: string;
+                };
+                message: string | null;
+                success: boolean;
+            }>("/auth/signin", {
+                method: "POST",
+                body: {
+                    email,
+                    password
+                },
+                baseURL: "http://localhost:8000"
+            });
+        } catch (err) {
+            throw new Error("Ошибка при входе");
         }
-      });
+    },
 
-      return response;
-    } catch (err) {
-      console.log("@err", err);
-      throw new Error("Ошибка при получении пользователя");
+    async getUser() {
+        try {
+            return await $fetch<SuccessResponse<User>>("/auth/me", {
+                baseURL: "http://localhost:8000",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("access_token")}`
+                },
+            });
+        } catch (err) {
+            throw new Error("Ошибка при получении пользователя");
+        }
     }
-  }
 };

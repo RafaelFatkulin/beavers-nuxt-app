@@ -1,45 +1,48 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 definePageMeta({
-  layout: "default",
-  middleware: ["auth"]
+  layout: "dashboard",
 });
 
-console.log("dashboard opened");
-
-onBeforeMount(() => {
-  console.log("dashboard mounted");
-});
+const nuxtApp = useNuxtApp();
 
 const { user, getCurrentUser, accessToken } = useAuth();
 
-watch(accessToken, async () => await getCurrentUser());
+const { data, status, refresh, error } = await useAsyncData<
+    SuccessResponse<
+        {
+          id: number;
+          title: string;
+          description: string;
+        }[]
+    >,
+    ErrorResponse
+>("categories", async () => nuxtApp.$api("/categories"));
 
-const { $api } = useNuxtApp();
+if (!accessToken.value) {
+  await getCurrentUser();
+  await refresh()
+}
 
-const { data, status } = useAsyncData<
-  SuccessResponse<
-    {
-      id: number;
-      title: string;
-      description: string;
-    }[]
-  >,
-  ErrorResponse
->(
-  "all-categories",
-  () => $api("/categories", { baseURL: "http://localhost:8000" }),
-  { immediate: true, watch: [user] }
-);
+if (error.value) {
+  await refresh()
+}
 </script>
 
 <template>
   <h1>Dashboard page {{ user?.fullName }}</h1>
 
   <ul v-if="status === 'success'">
-    <li v-for="category in data?.data">
+    <li
+        v-for="category in data?.data"
+        :key="category.id"
+    >
       {{ category.id }} - {{ category.title }}
     </li>
   </ul>
 
   <span v-if="status === 'pending'">Loading...</span>
+
+  <span v-if="status === 'error'">
+    {{ error?.data?.message }}
+  </span>
 </template>
