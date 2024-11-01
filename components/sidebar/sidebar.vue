@@ -43,7 +43,7 @@ const items = ref([
 </script>
 
 <template>
-  <aside class="p-4 border-r border-[var(--ui-border)] flex flex-col gap-4">
+  <aside class="p-4 border-r border-[var(--ui-border)] flex flex-col gap-4 sticky t-0 h-screen">
     <NuxtLink class="font-semibold px-3 transition-colors hover:text-[var(--ui-primary)]" to="/dashboard">
       Beavers
     </NuxtLink>

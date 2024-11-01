@@ -9,12 +9,13 @@ export default defineNuxtPlugin((nuxtApp) => {
     const api = $fetch.create({
         baseURL: nuxtApp.$config.public.apiUrl,
         credentials: "include",
+        retryStatusCodes: [401],
         onRequest({ request, options, error }) {
             if (accessToken.value) {
                 options.headers.set("Authorization", `Bearer ${accessToken.value}`);
             }
         },
-        async onResponseError({ response, error }) {
+        async onResponseError({ request, response, error, options }) {
             if (response.status === 401) {
                 await $fetch<
                     SuccessResponse<{ accessToken: string; refreshToken: string }>

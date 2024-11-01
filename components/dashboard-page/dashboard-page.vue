@@ -9,7 +9,9 @@
     <slot name="subheader"/>
   </div>
 
-  <slot/>
+  <div class="flex-1 overflow-auto">
+    <slot/>
+  </div>
 </template>
 <script lang="ts" setup>
 </script>

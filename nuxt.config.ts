@@ -13,7 +13,11 @@ export default defineNuxtConfig({
             icons: [
                 "heroicons:arrow-right-end-on-rectangle",
                 "heroicons:arrow-right-start-on-rectangle",
-                "heroicons:exclamation-circle"
+                "heroicons:exclamation-circle",
+                "heroicons:arrow-path",
+                "heroicons:briefcase",
+                "heroicons-magnifying-glass",
+                "heroicons-x-circle",
             ]
         }
     },
