@@ -9,6 +9,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     const api = $fetch.create({
         baseURL: nuxtApp.$config.public.apiUrl,
         credentials: "include",
+        retry: 3,
         retryStatusCodes: [401],
         onRequest({ request, options, error }) {
             if (accessToken.value) {

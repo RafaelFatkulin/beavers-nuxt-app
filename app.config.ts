@@ -6,12 +6,18 @@ export default defineAppConfig({
         },
         button: {
             slots: {
-                base: ["cursor-pointer"]
+                base: "cursor-pointer"
             }
         },
         navigationMenu: {
             slots: {
-                link: ['cursor-pointer']
+                link: 'cursor-pointer'
+            }
+        },
+        toast: {
+            slots: {
+                root: '!z-[500]',
+                wrapper: '!z-[500]',
             }
         }
     }

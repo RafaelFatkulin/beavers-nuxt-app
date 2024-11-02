@@ -18,6 +18,7 @@ export default defineNuxtConfig({
                 "heroicons:briefcase",
                 "heroicons-magnifying-glass",
                 "heroicons-x-circle",
+                "heroicons-user-plus"
             ]
         }
     },

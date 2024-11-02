@@ -1,5 +1,8 @@
 <template>
-  <UApp>
+  <UApp :toaster="{class: '!z-[100]', ui: {
+    viewport: '!z-[100]',
+    base: '!z-[100]',
+  }}">
     <NuxtLayout>
       <NuxtLoadingIndicator/>
       <NuxtPage/>
