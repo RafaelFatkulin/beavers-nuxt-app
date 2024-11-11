@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { TableColumn } from "@nuxt/ui";
 import { useGetUsers } from "~/composables/users/get-users";
+import { UButton } from "#components";
 
 const UAvatar = resolveComponent("UAvatar")
 const UBadge = resolveComponent("UBadge")
@@ -65,6 +66,18 @@ const columns: TableColumn<User>[] = [
       return h('p', { class: 'text-gray-500 dark:text-gray-400 w-full' }, `${row.original.phone ? row.original.phone : '—'}`)
     }
   },
+  {
+    header: 'Действия',
+    cell: ({ row }) => {
+      return h(
+          'div',
+          { class: "flex items-center gap-2" },
+          [
+            h(UButton, undefined, 'edit')
+          ]
+      )
+    }
+  }
 ]
 
 </script>
