@@ -34,7 +34,7 @@ watchEffect(async () => {
       title: "Успех",
       description: data.value?.message,
       color: 'success',
-      icon: 'i-heroicons-check-circle',
+      icon: 'i-lucide-badge-check',
       type: 'foreground'
     })
 

@@ -19,6 +19,12 @@ export default defineAppConfig({
                 root: '!z-[500]',
                 wrapper: '!z-[500]',
             }
-        }
+        },
+        modal: {
+            slots: {
+                description: "text-pretty",
+                title: "text-pretty",
+            }
+        },
     }
 });

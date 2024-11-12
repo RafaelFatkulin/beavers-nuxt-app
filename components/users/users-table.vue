@@ -1,32 +1,33 @@
 <script lang="ts" setup>
-import type { TableColumn } from "@nuxt/ui";
 import { useGetUsers } from "~/composables/users/get-users";
-import { UButton } from "#components";
+import { UButton, UDropdownMenu } from "#components";
+import type { TableColumn } from '@nuxt/ui'
+import type { Row } from '@tanstack/vue-table'
+import { colorByRole, translateRole } from "~/utils/user";
+import UsersDeleteModal from "~/components/users/users-delete-modal.vue";
+import { useDeleteUser } from "~/composables/users/delete-user";
 
 const UAvatar = resolveComponent("UAvatar")
 const UBadge = resolveComponent("UBadge")
 
+const modal = useModal()
+
 const { data, status, error } = await useGetUsers()
 
+const { userToDelete, updateUserToDelete } = await useDeleteUser()
 
-const colorByRole = (role: Role): string => {
-  const roleColors: Record<Role, string> = {
-    ADMIN: 'warning',
-    LOGISTICIAN: 'success',
-    MANAGER: 'primary'
-  }
-  return roleColors[role]
+const openModal = () => {
+  modal.open(UsersDeleteModal, {
+    key: 'user-delete-modal',
+  })
 }
+watch(userToDelete, () => {
+  console.log(userToDelete.value?.id)
+  if (userToDelete.value !== null) {
+    openModal()
+  }
+})
 
-const translateRole = (role: Role) => {
-  const roleTranslations: Record<Role, string> = {
-    ADMIN: 'Администратор',
-    LOGISTICIAN: 'Логист',
-    MANAGER: 'Менеджер',
-  };
-
-  return roleTranslations[role] || roleTranslations.MANAGER;
-};
 const columns: TableColumn<User>[] = [
   {
     accessorKey: 'id',
@@ -67,18 +68,59 @@ const columns: TableColumn<User>[] = [
     }
   },
   {
-    header: 'Действия',
+    id: 'actions',
     cell: ({ row }) => {
       return h(
           'div',
-          { class: "flex items-center gap-2" },
-          [
-            h(UButton, undefined, 'edit')
-          ]
+          { class: "text-right" },
+          h(
+              UDropdownMenu,
+              {
+                content: {
+                  align: 'end',
+                },
+                items: getRowItems(row),
+              },
+              () => h(UButton, {
+                icon: 'i-lucide-ellipsis-vertical',
+                color: 'neutral',
+                variant: 'ghost',
+                class: 'ml-auto'
+              })
+          )
       )
     }
   }
 ]
+
+function getRowItems(row: Row<User>) {
+  return [
+    [
+      {
+        type: 'label',
+        label: 'Действия',
+      }
+    ],
+    [
+      {
+        type: 'link',
+        to: `/users/${row.original.id}`,
+        label: 'Открыть',
+        icon: 'i-lucide-eye'
+      },
+      {
+        label: 'Редактировать',
+        icon: 'i-lucide-pencil'
+      },
+      {
+        label: 'Удалить',
+        color: 'error' as const,
+        icon: 'i-lucide-trash',
+        onSelect: () => updateUserToDelete(row.original)
+      }
+    ]
+  ]
+}
 
 </script>
 
@@ -88,10 +130,11 @@ const columns: TableColumn<User>[] = [
       :data="data?.data"
       :loading="status==='pending'"
       :sticky="true"
-      class="flex-1 h-screen"
+      class="flex-1 h-full"
   >
     <template #empty>
       {{ error?.data?.message }}
     </template>
   </UTable>
+  <users-delete-modal/>
 </template>

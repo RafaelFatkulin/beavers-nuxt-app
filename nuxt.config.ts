@@ -16,9 +16,20 @@ export default defineNuxtConfig({
                 "heroicons:exclamation-circle",
                 "heroicons:arrow-path",
                 "heroicons:briefcase",
-                "heroicons-magnifying-glass",
-                "heroicons-x-circle",
-                "heroicons-user-plus"
+                "heroicons:magnifying-glass",
+                "heroicons:x-circle",
+                "heroicons:user-plus",
+                "lucide:ellipsis-vertical",
+                "lucide:pencil",
+                "lucide:eye",
+                "lucide:trash",
+                "lucide:chevron-left",
+            ],
+            scan: true,
+        },
+        serverBundle: {
+            collections: [
+                'lucide', 'heroicons'
             ]
         }
     },
