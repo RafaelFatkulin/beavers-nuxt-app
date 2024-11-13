@@ -15,6 +15,7 @@ const { data, status } = await useGetUserById()
       <div class="flex flex-row items-center gap-2">
         <UTooltip text="Вернуться назад">
           <UButton
+              color="neutral"
               icon="i-lucide-chevron-left"
               to="/users"
               variant="link"

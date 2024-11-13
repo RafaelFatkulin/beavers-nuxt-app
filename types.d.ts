@@ -2,7 +2,7 @@ type Role = "ADMIN" | "LOGISTICIAN" | "MANAGER"
 
 type User = {
     id: number;
-    fullName: string | null;
+    fullName: string | undefined;
     email: string;
     phone: string | null;
     avatar: string | null;

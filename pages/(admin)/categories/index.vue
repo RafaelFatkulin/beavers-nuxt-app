@@ -1,1 +1,11 @@
-<template><h1>Categories List page</h1></template>
+<script lang="ts" setup>
+definePageMeta({
+  layout: 'dashboard',
+})
+</script>
+
+<template>
+  <dashboard-page>
+    <template #header>Категории</template>
+  </dashboard-page>
+</template>

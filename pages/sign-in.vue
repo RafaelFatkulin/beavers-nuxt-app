@@ -6,10 +6,12 @@ definePageMeta({
 });
 
 const schema = z.object({
-  email: z.string({ required_error: "Email is required" }).email(),
+  email: z
+      .string({ required_error: 'Поле "e-mail" обязательно для заполнения' })
+      .email({ message: 'Некорректный e-mail' }),
   password: z
-      .string({ required_error: "Password is required" })
-      .min(8, { message: "Password must be at least 8 characters" })
+      .string({ required_error: 'Поле "пароль" обязательно для заполнения' })
+      .min(8, { message: 'Поле "пароль" должно содержать не менее 8 символов' })
 });
 
 type Schema = z.infer<typeof schema>;
@@ -59,7 +61,7 @@ watch(status, (value) => {
 <template>
   <UCard class="mx-auto w-full max-w-[420px]">
     <template #header>
-      <h1 class="text-lg font-semibold text-center">Sign In</h1>
+      <h1 class="text-lg font-semibold text-center">Авторизация</h1>
     </template>
 
     <UForm
@@ -78,7 +80,7 @@ watch(status, (value) => {
         />
       </UFormField>
       <UFormField
-          label="Password"
+          label="Пароль"
           name="password"
       >
         <UInput
@@ -90,17 +92,10 @@ watch(status, (value) => {
       <UButton
           :loading="status === 'pending' || status === 'success'"
           class="w-full items-center justify-center"
+          icon="i-lucide-log-in"
+          label="Войти"
           type="submit"
-      >
-        <template #leading>
-          <UIcon
-              v-if="status !== 'pending'"
-              class="size-5"
-              name="i-heroicons-arrow-right-end-on-rectangle"
-          />
-        </template>
-        <template #default> Sign In</template>
-      </UButton>
+      />
     </UForm>
   </UCard>
 </template>

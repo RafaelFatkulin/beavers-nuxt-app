@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useGetUsers } from "~/composables/users/get-users";
 import { UButton, UDropdownMenu } from "#components";
-import type { TableColumn } from '@nuxt/ui'
-import type { Row } from '@tanstack/vue-table'
+// import type { TableColumn } from '@nuxt/ui'
+import type { ColumnDef, Row } from '@tanstack/vue-table'
 import { colorByRole, translateRole } from "~/utils/user";
 import UsersDeleteModal from "~/components/users/users-delete-modal.vue";
 import { useDeleteUser } from "~/composables/users/delete-user";
@@ -10,25 +10,11 @@ import { useDeleteUser } from "~/composables/users/delete-user";
 const UAvatar = resolveComponent("UAvatar")
 const UBadge = resolveComponent("UBadge")
 
-const modal = useModal()
-
 const { data, status, error } = await useGetUsers()
 
-const { userToDelete, updateUserToDelete } = await useDeleteUser()
+const { updateUserToDelete } = await useDeleteUser()
 
-const openModal = () => {
-  modal.open(UsersDeleteModal, {
-    key: 'user-delete-modal',
-  })
-}
-watch(userToDelete, () => {
-  console.log(userToDelete.value?.id)
-  if (userToDelete.value !== null) {
-    openModal()
-  }
-})
-
-const columns: TableColumn<User>[] = [
+const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'id',
     header: '#'

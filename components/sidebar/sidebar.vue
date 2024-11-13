@@ -1,52 +1,21 @@
 <script lang="ts" setup>
-import { ref } from "#imports";
+import { useNavigationLinks } from "~/composables/navigation-links";
 
-const items = ref([
-  {
-    label: 'Главная',
-    icon: 'i-heroicons-home',
-    to: '/dashboard',
-  },
-  {
-    label: 'Категории',
-    icon: 'i-heroicons-squares-2x2',
-    children: [
-      {
-        label: 'Добавить',
-        icon: 'i-heroicons-plus-circle',
-        to: '/categories/create',
-      },
-      {
-        label: 'Список',
-        icon: 'i-heroicons-list-bullet',
-        to: '/categories',
-      },
-    ]
-  },
-  {
-    label: 'Пользователи',
-    icon: 'i-heroicons-users',
-    children: [
-      {
-        label: 'Добавить',
-        icon: 'i-heroicons-user-plus',
-        to: '/users/create',
-      },
-      {
-        label: 'Список',
-        icon: 'i-heroicons-list-bullet',
-        to: '/users',
-      },
-    ]
-  }
-])
+const { items } = useNavigationLinks()
+
+const { user, signOut } = useAuth()
 </script>
 
 <template>
-  <aside class="p-4 border-r border-[var(--ui-border)] flex flex-col gap-4 sticky t-0 h-screen">
-    <NuxtLink class="font-semibold px-3 transition-colors hover:text-[var(--ui-primary)]" to="/dashboard">
-      Beavers
-    </NuxtLink>
-    <UNavigationMenu :items orientation="vertical"/>
+  <aside class="py-2 px-4 border-r border-[var(--ui-border)] hidden lg:flex flex-col sticky t-0 h-screen">
+    <div class="min-h-14 pb-2 flex items-center">
+      <NuxtLink class="font-semibold px-3 transition-colors hover:text-[var(--ui-primary)]" to="/dashboard">
+        Beavers
+      </NuxtLink>
+    </div>
+    <div class="pt-4 flex flex-col flex-1">
+      <UNavigationMenu :items class="flex-1" orientation="vertical"/>
+      <user-dropdown/>
+    </div>
   </aside>
 </template>

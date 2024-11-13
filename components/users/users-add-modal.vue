@@ -60,7 +60,9 @@ watchEffect(async () => {
       description='После создания сотрудника на указанную почту придет письмо с данными для входа'
       title="Новый сотрудник"
   >
-    <UButton icon="i-heroicons-user-plus" label="Новый пользователь"/>
+    <UButton class="ml-auto" icon="i-heroicons-user-plus">
+      <span class="hidden sm:flex">Новый сотрудник</span>
+    </UButton>
 
     <template #body>
       <div class="space-y-6">

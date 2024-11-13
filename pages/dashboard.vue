@@ -29,20 +29,24 @@ if (error.value) {
 </script>
 
 <template>
-  <h1>Dashboard page {{ user?.fullName }}</h1>
+  <dashboard-page>
+    <template #header>Главная</template>
 
-  <ul v-if="status === 'success'">
-    <li
-        v-for="category in data?.data"
-        :key="category.id"
-    >
-      {{ category.id }} - {{ category.title }}
-    </li>
-  </ul>
+    <div class="p-4">
+      <ul v-if="status === 'success'">
+        <li
+            v-for="category in data?.data"
+            :key="category.id"
+        >
+          {{ category.id }} - {{ category.title }}
+        </li>
+      </ul>
 
-  <span v-if="status === 'pending'">Loading...</span>
+      <span v-if="status === 'pending'">Loading...</span>
 
-  <span v-if="status === 'error'">
-    {{ error?.data?.message }}
-  </span>
+      <span v-if="status === 'error'">
+      {{ error?.data?.message }}
+    </span>
+    </div>
+  </dashboard-page>
 </template>

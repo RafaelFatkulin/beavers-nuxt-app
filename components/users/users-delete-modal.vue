@@ -4,85 +4,85 @@ import { useGetUsers } from "~/composables/users/get-users";
 
 const toast = useToast()
 
-const modal = useModal()
+const {
+  data,
+  status,
+  error,
+  execute,
+  clear,
+  updateUserToDelete,
+  isOpen,
+  lastUserToDeleteName
+} = await useDeleteUser()
 
-const { data, status, error, execute, clear, userToDelete, updateUserToDelete } = await useDeleteUser()
 const { refresh } = await useGetUsers()
-
-const handleClose = async () => {
-  updateUserToDelete()
-  await modal.close()
-}
-
-watch(modal.isOpen, (n, o) => {
-  console.log(`current - ${n}`, `previous - ${o}`)
-})
 
 watchEffect(async () => {
   if (status.value === 'success') {
-    console.log('success')
-    await handleClose()
-
+    console.log('Успех');
     toast.add({
       title: 'Успех',
       description: data.value?.message,
       color: 'success',
       icon: 'i-lucide-badge-check',
       type: 'foreground'
-    })
-
-    clear()
-    await refresh()
+    });
+    clear();
+    updateUserToDelete();
+    await refresh();
   }
 
   if (status.value === 'error') {
-    console.log('error')
-    await handleClose()
-
+    console.log('Ошибка');
     toast.add({
       title: 'Ошибка',
       description: error.value?.data?.message,
       color: 'error',
       icon: 'i-lucide-badge-alert',
       type: 'foreground'
-    })
-
-    clear()
-    await refresh()
+    });
+    clear();
+    updateUserToDelete();
+    await refresh();
   }
-})
+});
 </script>
 
 <template>
   <UModal
-      :open="modal.isOpen.value"
+      :open="isOpen"
       title="Удаление сотрудника"
-      update:open
+      @update:open="updateUserToDelete()"
   >
-    <template #description>
-      Вы действительно хотите удалить сотрудника
-      <span
-          class="font-bold text-[var(--ui-primary)]"
-      >
-        {{ userToDelete?.fullName }}
+    <template #body>
+      <div class="space-y-4">
+        <p>
+          Вы действительно хотите удалить сотрудника
+          <span
+              class="font-bold text-[var(--ui-primary)]"
+          >
+        {{ lastUserToDeleteName }}
       </span>?
-    </template>
-    <template #footer>
-      <UButton
-          :loading="status === 'pending'"
-          class="ml-auto"
-          color="error"
-          icon="i-lucide-trash"
-          label="Да"
-          @click="execute()"
-      />
-      <UButton
-          :loading="status === 'pending'"
-          color="neutral"
-          icon="i-lucide-ban"
-          label="Отмена"
-          @click="handleClose()"
-      />
+        </p>
+
+        <div class="flex flex-row items-center gap-2">
+          <UButton
+              :loading="status === 'pending'"
+              class="ml-auto min-w-24 justify-center"
+              color="error"
+              icon="i-lucide-trash"
+              label="Да"
+              @click="execute()"
+          />
+          <UButton
+              :loading="status === 'pending'"
+              color="neutral"
+              icon="i-lucide-ban"
+              label="Отмена"
+              @click="updateUserToDelete()"
+          />
+        </div>
+      </div>
     </template>
   </UModal>
 </template>

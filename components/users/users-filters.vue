@@ -24,11 +24,11 @@ const { status, search, selectedRole } = await useGetUsers()
 </script>
 
 <template>
-  <div class="flex flex-row gap-4">
+  <div class="flex flex-row flex-1 gap-4 flex-wrap gap-y-2">
     <UInput
         v-model="search"
         :loading="status==='pending'"
-        class="w-64"
+        class="w-full sm:w-64"
         icon="i-heroicons-magnifying-glass"
         placeholder="Поиск по имени или e-mail"
     >
@@ -47,7 +47,7 @@ const { status, search, selectedRole } = await useGetUsers()
         v-model="selectedRole"
         :items="roles"
         :loading="status==='pending'"
-        class="w-48"
+        class="w-full sm:w-48"
         icon="i-heroicons-briefcase"
         placeholder="Должность"
     />
