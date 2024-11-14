@@ -61,32 +61,28 @@ watchEffect(async () => {
           <span
               class="font-bold text-[var(--ui-primary)]"
           >
-        {{ lastUserToDeleteName }}
-      </span>?
+            {{ lastUserToDeleteName }}
+          </span>?
         </p>
-
-        <div class="flex flex-row items-center gap-2">
-          <UButton
-              :loading="status === 'pending'"
-              class="ml-auto min-w-24 justify-center"
-              color="error"
-              icon="i-lucide-trash"
-              label="Да"
-              @click="execute()"
-          />
-          <UButton
-              :loading="status === 'pending'"
-              color="neutral"
-              icon="i-lucide-ban"
-              label="Отмена"
-              @click="updateUserToDelete()"
-          />
-        </div>
       </div>
+    </template>
+
+    <template #footer>
+      <UButton
+          :loading="status === 'pending'"
+          class="ml-auto min-w-24 justify-center"
+          color="error"
+          icon="i-lucide-trash"
+          label="Да"
+          @click="execute()"
+      />
+      <UButton
+          :loading="status === 'pending'"
+          color="neutral"
+          icon="i-lucide-ban"
+          label="Отмена"
+          @click="updateUserToDelete()"
+      />
     </template>
   </UModal>
 </template>
-
-<style scoped>
-
-</style>

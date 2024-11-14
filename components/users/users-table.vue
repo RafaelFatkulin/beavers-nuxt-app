@@ -1,18 +1,20 @@
 <script lang="ts" setup>
 import { useGetUsers } from "~/composables/users/get-users";
-import { UButton, UDropdownMenu } from "#components";
-// import type { TableColumn } from '@nuxt/ui'
+import { UButton } from "#components";
 import type { ColumnDef, Row } from '@tanstack/vue-table'
 import { colorByRole, translateRole } from "~/utils/user";
 import UsersDeleteModal from "~/components/users/users-delete-modal.vue";
 import { useDeleteUser } from "~/composables/users/delete-user";
+import {useUpdateUser} from "~/composables/users/update-user";
 
 const UAvatar = resolveComponent("UAvatar")
 const UBadge = resolveComponent("UBadge")
+const UDropdownMenu = resolveComponent("UDropdownMenu")
 
 const { data, status, error } = await useGetUsers()
 
 const { updateUserToDelete } = await useDeleteUser()
+const { updateUserToUpdate } = await useUpdateUser()
 
 const columns: ColumnDef<User>[] = [
   {
@@ -62,17 +64,16 @@ const columns: ColumnDef<User>[] = [
           h(
               UDropdownMenu,
               {
-                content: {
-                  align: 'end',
-                },
                 items: getRowItems(row),
               },
-              () => h(UButton, {
-                icon: 'i-lucide-ellipsis-vertical',
-                color: 'neutral',
-                variant: 'ghost',
-                class: 'ml-auto'
-              })
+              () => [
+                h(UButton, {
+                  icon: 'i-lucide-ellipsis-vertical',
+                  color: 'neutral',
+                  variant: 'ghost',
+                  class: 'ml-auto'
+                })
+              ]
           )
       )
     }
@@ -96,7 +97,8 @@ function getRowItems(row: Row<User>) {
       },
       {
         label: 'Редактировать',
-        icon: 'i-lucide-pencil'
+        icon: 'i-lucide-pencil',
+        onSelect: () => updateUserToUpdate(row.original)
       },
       {
         label: 'Удалить',
@@ -122,5 +124,6 @@ function getRowItems(row: Row<User>) {
       {{ error?.data?.message }}
     </template>
   </UTable>
+  <users-update-modal />
   <users-delete-modal/>
 </template>

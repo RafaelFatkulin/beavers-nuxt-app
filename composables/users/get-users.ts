@@ -32,11 +32,6 @@ export const useGetUsers = async () => {
         }
     )
 
-    // watch([debouncedSearch, selectedRole], async () => {
-    //     console.log('update')
-    //     await response.refresh()
-    // })
-
     return {
         search,
         selectedRole,
