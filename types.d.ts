@@ -9,6 +9,12 @@ type User = {
     role: Role;
 };
 
+type Category = {
+    id: number;
+    title: string;
+    description: string;
+}
+
 type SuccessResponse<T> = {
     data?: T;
     message?: string;

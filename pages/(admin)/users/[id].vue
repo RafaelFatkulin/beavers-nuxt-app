@@ -22,16 +22,15 @@ const { data, status } = await useGetUserById()
           />
         </UTooltip>
 
-        <h1 v-if="status==='success'"
-            class="flex items-center capitalize gap-1.5 font-semibold text-gray-900 dark:text-white min-w-0">
+        <dashboard-title v-if="status==='success'">
           {{ data?.data?.fullName }}
           <UBadge
-              :color="colorByRole(data.data?.role)"
+              :color="colorByRole(data?.data?.role)"
               variant="subtle"
           >
             {{ translateRole(data?.data?.role) }}
           </UBadge>
-        </h1>
+        </dashboard-title>
         <span v-if="status === 'pending'">
           <USkeleton class="h-[24px] w-[240px]"/>
         </span>

@@ -14,12 +14,6 @@ export default defineAppConfig({
                 link: 'cursor-pointer'
             }
         },
-        toast: {
-            slots: {
-                root: '!z-[500]',
-                wrapper: '!z-[500]',
-            }
-        },
         modal: {
             slots: {
                 description: "text-pretty",

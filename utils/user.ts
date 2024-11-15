@@ -8,7 +8,7 @@ export const translateRole = (role: Role | undefined) => {
     return role ? roleTranslations[role] : roleTranslations.MANAGER;
 };
 
-export const colorByRole = (role: Role): 'warning' | 'success' | 'primary' => {
+export const colorByRole = (role: Role | undefined): 'warning' | 'success' | 'primary' => {
     const roleColors: Record<
         Role,
         'warning' |

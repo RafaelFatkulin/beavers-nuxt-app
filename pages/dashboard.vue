@@ -30,7 +30,9 @@ if (error.value) {
 
 <template>
   <dashboard-page>
-    <template #header>Главная</template>
+    <template #header>
+      <dashboard-title>Главная</dashboard-title>
+    </template>
 
     <div class="p-4">
       <ul v-if="status === 'success'">

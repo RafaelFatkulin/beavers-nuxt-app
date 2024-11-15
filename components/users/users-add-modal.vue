@@ -60,7 +60,7 @@ watchEffect(async () => {
       description='После создания сотрудника на указанную почту придет письмо с данными для входа'
       title="Новый сотрудник"
   >
-    <UButton class="ml-auto" icon="i-heroicons-user-plus">
+    <UButton class="ml-auto" icon="i-lucide-user-plus">
       <span class="hidden sm:flex">Новый сотрудник</span>
     </UButton>
 
@@ -70,7 +70,7 @@ watchEffect(async () => {
             v-if="error"
             :description="error.data?.message"
             color="error"
-            icon="i-heroicons-exclamation-triangle"
+            icon="i-lucide-badge-alert"
             title="Ошибка"
             variant="subtle"
         />

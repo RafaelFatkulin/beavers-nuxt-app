@@ -2,8 +2,6 @@
 import { useNavigationLinks } from "~/composables/navigation-links";
 
 const { items } = useNavigationLinks()
-
-const { user, signOut } = useAuth()
 </script>
 
 <template>

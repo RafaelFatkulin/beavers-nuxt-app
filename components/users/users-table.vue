@@ -5,7 +5,7 @@ import type { ColumnDef, Row } from '@tanstack/vue-table'
 import { colorByRole, translateRole } from "~/utils/user";
 import UsersDeleteModal from "~/components/users/users-delete-modal.vue";
 import { useDeleteUser } from "~/composables/users/delete-user";
-import {useUpdateUser} from "~/composables/users/update-user";
+import { useUpdateUser } from "~/composables/users/update-user";
 
 const UAvatar = resolveComponent("UAvatar")
 const UBadge = resolveComponent("UBadge")
@@ -117,13 +117,13 @@ function getRowItems(row: Row<User>) {
       :columns
       :data="data?.data"
       :loading="status==='pending'"
-      :sticky="true"
       class="flex-1 h-full"
+      sticky
   >
     <template #empty>
       {{ error?.data?.message }}
     </template>
   </UTable>
-  <users-update-modal />
+  <users-update-modal/>
   <users-delete-modal/>
 </template>
