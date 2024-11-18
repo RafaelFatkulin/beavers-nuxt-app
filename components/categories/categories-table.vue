@@ -75,14 +75,6 @@ function getRowItems(row: Row<Category>) {
     ]
   ]
 }
-
-function to(page: number) {
-  return {
-    query: {
-      page
-    }
-  }
-}
 </script>
 
 <template>
@@ -102,10 +94,11 @@ function to(page: number) {
       v-if="data?.meta"
       v-model:page="page"
       :disabled="status === 'pending'"
-      :per-page="data?.meta?.limit"
-      :to="to"
+      :items-per-page="data?.meta?.limit"
+      :to="(val) => `/categories?${val ? 'page='+val : ''}`"
       :total="data?.meta?.total"
       class="my-2 p-4 w-fit"
+      show-edges
       @update:page="updatePage"
   />
 

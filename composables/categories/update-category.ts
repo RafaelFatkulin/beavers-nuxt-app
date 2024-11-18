@@ -25,8 +25,6 @@ export const useUpdateCategory = async () => {
     }
 
     watchEffect(() => {
-        console.log('category', categoryToUpdate.value)
-        console.log('state', state)
         state.title = categoryToUpdate.value?.title || ''
         state.description = categoryToUpdate.value?.description || undefined
     })
