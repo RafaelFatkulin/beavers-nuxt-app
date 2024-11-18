@@ -3,10 +3,14 @@
 import { useGetCategories } from "~/composables/categories/get-categories";
 import type { ColumnDef, Row } from "@tanstack/vue-table";
 import { UButton } from "#components";
+import { useDeleteCategory } from "~/composables/categories/delete-category";
+import { useUpdateCategory } from "~/composables/categories/update-category";
 
 const UDropdownMenu = resolveComponent("UDropdownMenu")
 
-const { data, status, error } = await useGetCategories()
+const { data, status, error, page, updatePage } = await useGetCategories()
+const { updateCategoryToDelete } = await useDeleteCategory()
+const { updateCategoryToUpdate } = await useUpdateCategory()
 
 const columns: ColumnDef<Category>[] = [
   {
@@ -60,16 +64,24 @@ function getRowItems(row: Row<Category>) {
       {
         label: 'Редактировать',
         icon: 'i-lucide-pencil',
-        onSelect: () => {}
+        onSelect: () => updateCategoryToUpdate(row.original)
       },
       {
         label: 'Удалить',
         color: 'error' as const,
         icon: 'i-lucide-trash',
-        onSelect: () => {}
+        onSelect: () => updateCategoryToDelete(row.original)
       }
     ]
   ]
+}
+
+function to(page: number) {
+  return {
+    query: {
+      page
+    }
+  }
 }
 </script>
 
@@ -78,15 +90,25 @@ function getRowItems(row: Row<Category>) {
       :columns
       :data="data?.data"
       :loading="status==='pending'"
-      class="flex-1 h-full"
+      class="flex-1"
       sticky
   >
     <template #empty>
       {{ error?.data?.message }}
     </template>
   </UTable>
+
+  <UPagination
+      v-if="data?.meta"
+      v-model:page="page"
+      :disabled="status === 'pending'"
+      :per-page="data?.meta?.limit"
+      :to="to"
+      :total="data?.meta?.total"
+      class="my-2 p-4 w-fit"
+      @update:page="updatePage"
+  />
+
+  <categories-delete-modal/>
+  <categories-update-modal/>
 </template>
-
-<style scoped>
-
-</style>

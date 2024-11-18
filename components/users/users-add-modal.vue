@@ -98,8 +98,12 @@ watchEffect(async () => {
             <USelect v-model="state.role" :items="roleOptions" class="w-full"/>
           </UFormField>
 
-          <UButton :loading="status === 'pending'" class="w-full justify-center" icon="i-heroicons-user-plus"
-                   type="submit">
+          <UButton
+              :loading="status==='pending'"
+              class="w-full justify-center"
+              icon="i-heroicons-user-plus"
+              type="submit"
+          >
             Создать
           </UButton>
         </UForm>

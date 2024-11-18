@@ -11,7 +11,7 @@ const state = reactive<CreateCategory>({
 })
 
 const { data, error, status, execute, clear } = await useAddCategory(state)
-const { refresh } = await useGetCategories()
+const { data: categoriesData, refresh, page, updatePage } = await useGetCategories()
 
 watch(state, () => clear())
 
@@ -28,6 +28,11 @@ watchEffect(async () => {
     state.title = ''
     state.description = ''
     await modal.close()
+
+    if (categoriesData.value?.data?.length === 10) {
+      updatePage(page.value + 1)
+    }
+
     await refresh()
     clear()
   }

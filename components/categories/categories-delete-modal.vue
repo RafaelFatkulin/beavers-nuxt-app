@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { useDeleteUser } from "~/composables/users/delete-user";
-import { useGetUsers } from "~/composables/users/get-users";
+import { useDeleteCategory } from "~/composables/categories/delete-category";
+import { useGetCategories } from "~/composables/categories/get-categories";
 
+const router = useRouter()
 const toast = useToast()
 
 const {
@@ -10,12 +11,11 @@ const {
   error,
   execute,
   clear,
-  updateUserToDelete,
+  updateCategoryToDelete,
   isOpen,
-  lastUserToDeleteName
-} = await useDeleteUser()
-
-const { refresh } = await useGetUsers()
+  lastCategoryToDeleteTitle
+} = await useDeleteCategory()
+const { data: categoriesData, page, refresh, updatePage } = await useGetCategories()
 
 watchEffect(async () => {
   if (status.value === 'success') {
@@ -25,10 +25,15 @@ watchEffect(async () => {
       color: 'success',
       icon: 'i-lucide-badge-check',
       type: 'foreground'
-    });
-    clear();
-    updateUserToDelete();
-    await refresh();
+    })
+
+    if (categoriesData.value?.data?.length === 1) {
+      updatePage(page.value ? page.value - 1 : 1)
+    }
+
+    clear()
+    updateCategoryToDelete()
+    await refresh()
   }
 
   if (status.value === 'error') {
@@ -40,26 +45,26 @@ watchEffect(async () => {
       type: 'foreground'
     });
     clear();
-    updateUserToDelete();
+    updateCategoryToDelete();
     await refresh();
   }
-});
+})
 </script>
 
 <template>
-  <UModal
+  <u-modal
       :open="isOpen"
-      title="Удаление сотрудника"
-      @update:open="updateUserToDelete()"
+      title="Удаление категории"
+      @update:open="updateCategoryToDelete()"
   >
     <template #body>
       <div class="space-y-4">
         <p>
-          Вы действительно хотите удалить сотрудника
+          Вы действительно хотите удалить категорию
           <span
               class="font-bold text-[var(--ui-primary)]"
           >
-            {{ lastUserToDeleteName }}
+            {{ lastCategoryToDeleteTitle }}
           </span>?
         </p>
       </div>
@@ -79,8 +84,8 @@ watchEffect(async () => {
           color="neutral"
           icon="i-lucide-ban"
           label="Отмена"
-          @click="updateUserToDelete()"
+          @click="updateCategoryToDelete()"
       />
     </template>
-  </UModal>
+  </u-modal>
 </template>

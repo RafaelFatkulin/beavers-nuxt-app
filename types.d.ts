@@ -15,8 +15,16 @@ type Category = {
     description: string;
 }
 
+type Meta = {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+}
+
 type SuccessResponse<T> = {
     data?: T;
+    meta?: Meta;
     message?: string;
     success: boolean;
 };

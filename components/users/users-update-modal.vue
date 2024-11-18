@@ -1,17 +1,16 @@
-<script setup lang="ts">
-import {type UpdateUser, updateUserSchema, useUpdateUser} from "~/composables/users/update-user";
-import {useGetUsers} from "~/composables/users/get-users";
+<script lang="ts" setup>
+import { updateUserSchema, useUpdateUser } from "~/composables/users/update-user";
+import { useGetUsers } from "~/composables/users/get-users";
 
 const toast = useToast()
 
 const roleOptions = ref([
-  {label: "Администратор", value: "ADMIN"},
-  {label: "Логист", value: "LOGISTICIAN"},
-  {label: "Менеджер", value: "MANAGER"},
+  { label: "Администратор", value: "ADMIN" },
+  { label: "Логист", value: "LOGISTICIAN" },
+  { label: "Менеджер", value: "MANAGER" },
 ])
 
 const {
-  userToUpdate,
   state,
   updateUserToUpdate,
   isOpen,
@@ -22,7 +21,7 @@ const {
   error
 } = await useUpdateUser()
 
-const {refresh} = await useGetUsers()
+const { refresh } = await useGetUsers()
 
 const onSubmit = async () => {
   await execute()
@@ -105,8 +104,8 @@ watchEffect(async () => {
             :loading="status === 'pending'"
             class="w-full justify-center"
             icon="i-lucide-pencil"
-            type="submit"
             label="Редактировать"
+            type="submit"
         />
       </UForm>
     </template>
