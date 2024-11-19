@@ -27,6 +27,5 @@ const { data } = await useGetUsers()
     </template>
 
     <users-table/>
-
   </dashboard-page>
 </template>

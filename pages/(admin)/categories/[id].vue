@@ -6,13 +6,9 @@ definePageMeta({
 })
 
 const { data, status } = await useGetCategoryById()
-const pageTitle = computed(() => data.value?.data?.title || 'Категория')
+
 useHead({
-  title: () => pageTitle.value,
-  meta: [
-    { name: 'description', content: 'Список категорий' },
-    { name: 'keywords', content: 'категории, список' },
-  ],
+  title: () => data.value?.data?.title || 'Категория'
 })
 </script>
 
